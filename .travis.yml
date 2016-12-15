@@ -50,8 +50,10 @@ deploy:
 
 before_install:
   - wget https://raw.githubusercontent.com/adafruit/MicroPython_TravisCI_Deploy/master/install_dependencies.sh
+  - chmod +x install_dependencies.sh
   - source install_dependencies.sh
 
 before_deploy:
   - wget https://raw.githubusercontent.com/adafruit/MicroPython_TravisCI_Deploy/master/build_release.sh
+  - chmod +x build_release.sh
   - ./build_release.sh
