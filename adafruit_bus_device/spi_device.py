@@ -25,23 +25,25 @@ class SPIDevice:
     Represents a single SPI device and manages locking the bus and the device
     address.
 
-    :param SPI spi: The SPI bus the device is on
+    :param ~nativeio.SPI spi: The SPI bus the device is on
     :param ~microcontroller.Pin chip_select: The chip select pin
 
-    Example::
+    Example:
+
+    .. code-block:: python
 
         import nativeio
         from board import *
         from adafruit_bus_device.spi_device import I2CDevice
 
-        with nativeio.SPI(SCK, MOSI, MISO) as spi:
-            device = SPIDevice(spi, D10)
+        with nativeio.SPI(SCK, MOSI, MISO) as spi_bus:
+            device = SPIDevice(spi_bus, D10)
             bytes_read = bytearray(4)
-            with device:
-                device.read(bytes_read)
+            with device as spi:
+                spi_device.read(bytes_read)
             # A second transaction
-            with device:
-                device.write(bytes_read)
+            with device as spi:
+                spi.write(bytes_read)
     """
     def __init__(self, spi, chip_select, baudrate=100000, polarity=0, phase=0):
         self.spi = spi

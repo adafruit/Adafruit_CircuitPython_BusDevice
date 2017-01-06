@@ -25,10 +25,12 @@ class I2CDevice:
     Represents a single I2C device and manages locking the bus and the device
     address.
 
-    :param I2C i2c: The I2C bus the device is on
+    :param ~nativeio.I2C i2c: The I2C bus the device is on
     :param int device_address: The 7 bit device address
 
-    Example::
+    Example:
+
+    .. code-block:: python
 
         import nativeio
         from board import *
@@ -44,6 +46,14 @@ class I2CDevice:
                 device.writeto(bytes_read)
     """
     def __init__(self, i2c, device_address):
+        # Verify that a deivce with that address exists.
+        while not i2c.try_lock():
+            pass
+        scan = i2c.scan()
+        i2c.unlock()
+        if device_address not in scan:
+            raise ValueError("No i2c device at address: " + str(hex(device_address)))
+
         self.i2c = i2c
         self.device_address = device_address
 
@@ -56,10 +66,10 @@ class I2CDevice:
         as if ``buf[start:end]``. This will not cause an allocation like
         ``buf[start:end]`` will so it saves memory.
 
-             :param int address: 7-bit device address
-             :param bytearray buffer: buffer to write into
-             :param int start: Index to start writing at
-             :param int end: Index to write up to but not include
+        :param int address: 7-bit device address
+        :param bytearray buffer: buffer to write into
+        :param int start: Index to start writing at
+        :param int end: Index to write up to but not include
         """
         self.i2c.readfrom_into(self.device_address, buf, **kwargs)
 
@@ -72,11 +82,10 @@ class I2CDevice:
         as if ``buffer[start:end]``. This will not cause an allocation like
         ``buffer[start:end]`` will so it saves memory.
 
-          :param bytearray buffer: buffer containing the bytes to write
-          :param int start: Index to start writing from
-          :param int end: Index to read up to but not include
-          :param bool stop: If true, output an I2C stop condition after the
-                            buffer is written
+        :param bytearray buffer: buffer containing the bytes to write
+        :param int start: Index to start writing from
+        :param int end: Index to read up to but not include
+        :param bool stop: If true, output an I2C stop condition after the buffer is written
         """
         self.i2c.writeto(self.device_address, buf, **kwargs)
 

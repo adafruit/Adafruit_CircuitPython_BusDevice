@@ -14,20 +14,20 @@ from os import path
 here = path.abspath(path.dirname(__file__))
 
 # Get the long description from the README file
-with open(path.join(here, 'README.md'), encoding='utf-8') as f:
+with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
-    name='adafruit-micropython-bus_device',
+    name='adafruit-circuitpython-bus_device',
 
     use_scm_version=True,
     setup_requires=['setuptools_scm'],
 
-    description='MicroPython device classes to manage bus sharing.',
+    description='CircuitPython bus device classes to manage bus sharing.',
     long_description=long_description,
 
     # The project's main homepage.
-    url='https://github.com/adafruit/Adafruit_MicroPython_BusDevice',
+    url='https://github.com/adafruit/Adafruit_CircuitPython_BusDevice',
 
     # Author details
     author='Adafruit Industries',
@@ -49,7 +49,7 @@ setup(
     ],
 
     # What does your project relate to?
-    keywords='adafruit spi i2c bus device micropython',
+    keywords='adafruit spi i2c bus device micropython circuitpython',
 
     # You can just specify the packages manually here if your project is
     # simple. Or you can use find_packages().
