@@ -1,7 +1,7 @@
 Adafruit CircuitPython BusDevice
 ==============================
 
-.. image:: https://readthedocs.org/projects/adafruit-circuitpython-bus_device/badge/?version=latest
+.. image:: https://readthedocs.org/projects/adafruit-circuitpython-busdevice/badge/?version=latest
     :target: https://circuitpython.readthedocs.io/projects/bus_device/en/latest/
     :alt: Documentation Status
 
