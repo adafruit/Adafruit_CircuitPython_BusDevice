@@ -28,6 +28,9 @@ class SPIDevice:
     :param ~nativeio.SPI spi: The SPI bus the device is on
     :param ~microcontroller.Pin chip_select: The chip select pin
 
+    .. note:: This class is **NOT** built into CircuitPython. See
+      :ref:`here for install instructions <bus_device_installation>`.
+
     Example:
 
     .. code-block:: python

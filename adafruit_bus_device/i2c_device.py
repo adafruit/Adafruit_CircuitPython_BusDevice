@@ -28,6 +28,9 @@ class I2CDevice:
     :param ~nativeio.I2C i2c: The I2C bus the device is on
     :param int device_address: The 7 bit device address
 
+    .. note:: This class is **NOT** built into CircuitPython. See
+      :ref:`here for install instructions <bus_device_installation>`.
+
     Example:
 
     .. code-block:: python
