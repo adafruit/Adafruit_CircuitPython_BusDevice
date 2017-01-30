@@ -52,10 +52,12 @@ class I2CDevice:
         # Verify that a deivce with that address exists.
         while not i2c.try_lock():
             pass
-        scan = i2c.scan()
-        i2c.unlock()
-        if device_address not in scan:
-            raise ValueError("No i2c device at address: " + str(hex(device_address)))
+        try:
+            i2c.writeto(device_address, b'')
+        except OSError:
+            raise ValueError("No I2C device at address: %x" % device_address)
+        finally:
+            i2c.unlock()
 
         self.i2c = i2c
         self.device_address = device_address
