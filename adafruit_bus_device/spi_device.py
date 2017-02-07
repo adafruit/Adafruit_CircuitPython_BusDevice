@@ -36,17 +36,17 @@ class SPIDevice:
     .. code-block:: python
 
         import nativeio
-        from board import *
-        from adafruit_bus_device.spi_device import I2CDevice
+        import board
+        from adafruit_bus_device.spi_device import SPIDevice
 
+        buffer = bytearray(4)
         with nativeio.SPI(SCK, MOSI, MISO) as spi_bus:
-            device = SPIDevice(spi_bus, D10)
-            bytes_read = bytearray(4)
-            with device as spi:
-                spi_device.read(bytes_read)
-            # A second transaction
-            with device as spi:
-                spi.write(bytes_read)
+            spi_device = SPIDevice(spi_bus, board.D10)
+        with spi_device as spi:
+            spi.readinto(buffer)
+        # A second transaction
+        with spi_device as spi:
+            spi.write(buffer)
     """
     def __init__(self, spi, chip_select, baudrate=100000, polarity=0, phase=0):
         self.spi = spi
