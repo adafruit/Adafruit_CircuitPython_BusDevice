@@ -43,10 +43,10 @@ class I2CDevice:
             device = I2CDevice(i2c, 0x70)
             bytes_read = bytearray(4)
             with device:
-                device.readfrom_into(bytes_read)
+                device.read_into(bytes_read)
             # A second transaction
             with device:
-                device.writeto(bytes_read)
+                device.write(bytes_read)
     """
     def __init__(self, i2c, device_address):
         # Verify that a deivce with that address exists.
@@ -62,7 +62,7 @@ class I2CDevice:
         self.i2c = i2c
         self.device_address = device_address
 
-    def readfrom_into(self, buf, **kwargs):
+    def read_into(self, buf, **kwargs):
         """
         Read into ``buf`` from the device. The number of bytes read will be the
         length of ``buf``.
@@ -71,14 +71,13 @@ class I2CDevice:
         as if ``buf[start:end]``. This will not cause an allocation like
         ``buf[start:end]`` will so it saves memory.
 
-        :param int address: 7-bit device address
         :param bytearray buffer: buffer to write into
         :param int start: Index to start writing at
         :param int end: Index to write up to but not include
         """
         self.i2c.readfrom_into(self.device_address, buf, **kwargs)
 
-    def writeto(self, buf, **kwargs):
+    def write(self, buf, **kwargs):
         """
         Write the bytes from ``buffer`` to the device. Transmits a stop bit if
         ``stop`` is set.
