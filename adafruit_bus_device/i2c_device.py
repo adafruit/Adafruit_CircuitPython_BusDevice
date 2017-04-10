@@ -25,7 +25,7 @@ class I2CDevice:
     Represents a single I2C device and manages locking the bus and the device
     address.
 
-    :param ~nativeio.I2C i2c: The I2C bus the device is on
+    :param ~busio.I2C i2c: The I2C bus the device is on
     :param int device_address: The 7 bit device address
 
     .. note:: This class is **NOT** built into CircuitPython. See
@@ -35,11 +35,11 @@ class I2CDevice:
 
     .. code-block:: python
 
-        import nativeio
+        import busio
         from board import *
         from adafruit_bus_device.i2c_device import I2CDevice
 
-        with nativeio.I2C(SCL, SDA) as i2c:
+        with busio.I2C(SCL, SDA) as i2c:
             device = I2CDevice(i2c, 0x70)
             bytes_read = bytearray(4)
             with device:
