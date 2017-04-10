@@ -27,6 +27,7 @@ class SPIDevice:
 
     :param ~nativeio.SPI spi: The SPI bus the device is on
     :param ~microcontroller.Pin chip_select: The chip select pin
+    :param int extra_clocks: The minimum number of clock cycles to cycle the bus after CS is high. (Used for SD cards.)
 
     .. note:: This class is **NOT** built into CircuitPython. See
       :ref:`here for install instructions <bus_device_installation>`.
@@ -48,11 +49,12 @@ class SPIDevice:
             with device as spi:
                 spi.write(bytes_read)
     """
-    def __init__(self, spi, chip_select, baudrate=100000, polarity=0, phase=0):
+    def __init__(self, spi, chip_select, baudrate=100000, polarity=0, phase=0, extra_clocks=0):
         self.spi = spi
         self.baudrate = baudrate
         self.polarity = polarity
         self.phase = phase
+        self.extra_clocks = extra_clocks
         self.chip_select = chip_select
         self.chip_select.switch_to_output(value=True)
 
@@ -66,5 +68,13 @@ class SPIDevice:
 
     def __exit__(self, *exc):
         self.chip_select.value = True
+        if self.extra_clocks > 0:
+            buf = bytearray(1)
+            buf[0] = 0xff
+            clocks = self.extra_clocks // 8
+            if self.extra_clocks % 8 != 0:
+                clocks += 1
+            for i in range(clocks):
+                self.spi.write(buf)
         self.spi.unlock()
         return False
