@@ -66,6 +66,37 @@ class SPIDevice:
         self.chip_select.value = False
         return self.spi
 
+    def read_into(self, buf, **kwargs):
+        """
+        Read into ``buf`` from the device. The number of bytes read will be the
+        length of ``buf``.
+
+        If ``start`` or ``end`` is provided, then the buffer will be sliced
+        as if ``buf[start:end]``. This will not cause an allocation like
+        ``buf[start:end]`` will so it saves memory.
+
+        :param bytearray buffer: buffer to write into
+        :param int start: Index to start writing at
+        :param int end: Index to write up to but not include
+        """
+        self.spi.readinto(buf, **kwargs)
+
+    def write(self, buf, **kwargs):
+            """
+            Write the bytes from ``buffer`` to the device. Transmits a stop bit if
+            ``stop`` is set.
+
+            If ``start`` or ``end`` is provided, then the buffer will be sliced
+            as if ``buffer[start:end]``. This will not cause an allocation like
+            ``buffer[start:end]`` will so it saves memory.
+
+            :param bytearray buffer: buffer containing the bytes to write
+            :param int start: Index to start writing from
+            :param int end: Index to read up to but not include
+            :param bool stop: If true, output an I2C stop condition after the buffer is written
+            """
+            self.spi.write(buf, **kwargs)
+
     def __exit__(self, *exc):
         self.chip_select.value = True
         if self.extra_clocks > 0:
