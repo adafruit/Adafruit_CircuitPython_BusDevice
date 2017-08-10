@@ -20,8 +20,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import digitalio
-
 class SPIDevice:
     """
     Represents a single SPI device and manages locking the bus and the device
