@@ -20,13 +20,15 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+import digitalio
+
 class SPIDevice:
     """
     Represents a single SPI device and manages locking the bus and the device
     address.
 
     :param ~busio.SPI spi: The SPI bus the device is on
-    :param ~microcontroller.Pin chip_select: The chip select pin
+    :param ~digitalio.DigitalInOut chip_select: The chip select pin object that implements the DigitalInOut API.
     :param int extra_clocks: The minimum number of clock cycles to cycle the bus after CS is high. (Used for SD cards.)
 
     .. note:: This class is **NOT** built into CircuitPython. See
@@ -37,14 +39,16 @@ class SPIDevice:
     .. code-block:: python
 
         import busio
+        import digitalio
         from board import *
-        from adafruit_bus_device.spi_device import I2CDevice
+        from adafruit_bus_device.spi_device import SPIDevice
 
         with busio.SPI(SCK, MOSI, MISO) as spi_bus:
-            device = SPIDevice(spi_bus, D10)
+            cs = digitalio.DigitalInOut(D10)
+            device = SPIDevice(spi_bus, cs)
             bytes_read = bytearray(4)
             with device as spi:
-                spi_device.read(bytes_read)
+                spi_device.readinto(bytes_read)
             # A second transaction
             with device as spi:
                 spi.write(bytes_read)
