@@ -43,7 +43,7 @@ class I2CDevice:
             device = I2CDevice(i2c, 0x70)
             bytes_read = bytearray(4)
             with device:
-                device.read_into(bytes_read)
+                device.readinto(bytes_read)
             # A second transaction
             with device:
                 device.write(bytes_read)
@@ -62,7 +62,7 @@ class I2CDevice:
         self.i2c = i2c
         self.device_address = device_address
 
-    def read_into(self, buf, **kwargs):
+    def readinto(self, buf, **kwargs):
         """
         Read into ``buf`` from the device. The number of bytes read will be the
         length of ``buf``.
@@ -74,6 +74,14 @@ class I2CDevice:
         :param bytearray buffer: buffer to write into
         :param int start: Index to start writing at
         :param int end: Index to write up to but not include
+        """
+        self.i2c.readfrom_into(self.device_address, buf, **kwargs)
+
+    def read_into(self, buf, **kwargs):
+        """
+        Warning: This method will be deprecated some time in the future.
+        Please start using readinto() instead.  readinto() is functionally
+        equivalent to read_into(), same parameters and same actions.
         """
         self.i2c.readfrom_into(self.device_address, buf, **kwargs)
 
