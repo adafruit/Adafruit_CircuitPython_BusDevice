@@ -77,14 +77,6 @@ class I2CDevice:
         """
         self.i2c.readfrom_into(self.device_address, buf, **kwargs)
 
-    def read_into(self, buf, **kwargs):
-        """
-        .. warning:: This method will be deprecated at some time in the future.
-        Please use `readinto`() instead.  `readinto`() is functionally
-        equivalent to read_into(), same parameters and same actions.
-        """
-        self.i2c.readfrom_into(self.device_address, buf, **kwargs)
-
     def write(self, buf, **kwargs):
         """
         Write the bytes from ``buffer`` to the device. Transmits a stop bit if
