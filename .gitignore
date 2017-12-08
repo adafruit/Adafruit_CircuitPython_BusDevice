@@ -3,5 +3,7 @@
 *.egg-info/
 dist/
 _build/
-build/
 __pycache__
+.env
+build*
+bundles
