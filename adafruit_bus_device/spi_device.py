@@ -45,8 +45,11 @@ class SPIDevice:
             cs = digitalio.DigitalInOut(D10)
             device = SPIDevice(spi_bus, cs)
             bytes_read = bytearray(4)
+            # The object assigned to spi in the with statements below
+            # is the original spi_bus object. We are using the busio.SPI
+            # operations busio.SPI.readinto() and busio.SPI.write().
             with device as spi:
-                spi_device.readinto(bytes_read)
+                spi.readinto(bytes_read)
             # A second transaction
             with device as spi:
                 spi.write(bytes_read)

@@ -30,7 +30,7 @@ bundle <bundle_installation>`.
 To install:
 
 #. Download and unzip the `latest release zip <https://github.com/adafruit/Adafruit_CircuitPython_BusDevice/releases>`_.
-#. Copy the unzipped ``adafruit_bus_device`` to the ``lib`` directory on the ``CIRCUITPY`` or ``MICROPYTHON`` drive.
+#. Copy the unzipped ``adafruit_bus_device`` to the ``lib`` directory on the ``CIRCUITPY`` drive.
 
 API
 ---
