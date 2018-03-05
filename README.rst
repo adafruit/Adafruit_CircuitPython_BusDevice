@@ -6,7 +6,7 @@ Adafruit CircuitPython BusDevice
     :alt: Documentation Status
 
 .. image :: https://img.shields.io/discord/327254708534116352.svg
-    :target: https://adafru.it/discord
+    :target: https://discord.gg/nBQh6qu
     :alt: Discord
 
 .. image:: https://travis-ci.org/adafruit/Adafruit_CircuitPython_BusDevice.svg?branch=master
