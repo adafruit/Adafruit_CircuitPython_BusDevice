@@ -22,7 +22,7 @@
 # pylint: disable=too-few-public-methods
 
 """
-SPI Bus Device
+`adafruit_bus_device.spi_device` - SPI Bus Device
 ====================================================
 """
 
