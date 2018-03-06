@@ -21,7 +21,7 @@
 # THE SOFTWARE.
 
 """
-I2C Bus Device
+`adafruit_bus_device.i2c_device` - I2C Bus Device
 ====================================================
 """
 
