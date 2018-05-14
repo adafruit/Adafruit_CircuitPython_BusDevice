@@ -65,25 +65,29 @@ class SPIDevice:
             with device as spi:
                 spi.write(bytes_read)
     """
-    def __init__(self, spi, chip_select, *, baudrate=100000, polarity=0, phase=0, extra_clocks=0):
+    def __init__(self, spi, chip_select=None, *,
+                 baudrate=100000, polarity=0, phase=0, extra_clocks=0):
         self.spi = spi
         self.baudrate = baudrate
         self.polarity = polarity
         self.phase = phase
         self.extra_clocks = extra_clocks
         self.chip_select = chip_select
-        self.chip_select.switch_to_output(value=True)
+        if self.chip_select:
+            self.chip_select.switch_to_output(value=True)
 
     def __enter__(self):
         while not self.spi.try_lock():
             pass
         self.spi.configure(baudrate=self.baudrate, polarity=self.polarity,
                            phase=self.phase)
-        self.chip_select.value = False
+        if self.chip_select:
+            self.chip_select.value = False
         return self.spi
 
     def __exit__(self, *exc):
-        self.chip_select.value = True
+        if self.chip_select:
+            self.chip_select.value = True
         if self.extra_clocks > 0:
             buf = bytearray(1)
             buf[0] = 0xff
