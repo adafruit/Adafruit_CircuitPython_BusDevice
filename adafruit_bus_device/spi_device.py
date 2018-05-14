@@ -65,7 +65,8 @@ class SPIDevice:
             with device as spi:
                 spi.write(bytes_read)
     """
-    def __init__(self, spi, chip_select=None, *, baudrate=100000, polarity=0, phase=0, extra_clocks=0):
+    def __init__(self, spi, chip_select=None, *, 
+                 baudrate=100000, polarity=0, phase=0, extra_clocks=0):
         self.spi = spi
         self.baudrate = baudrate
         self.polarity = polarity
