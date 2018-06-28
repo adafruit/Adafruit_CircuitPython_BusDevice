@@ -18,20 +18,23 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
-    name='adafruit-circuitpython-bus_device',
+    name='adafruit-circuitpython-busdevice',
 
     use_scm_version=True,
     setup_requires=['setuptools_scm'],
 
     description='CircuitPython bus device classes to manage bus sharing.',
     long_description=long_description,
+    long_description_content_type='text/x-rst',
 
     # The project's main homepage.
     url='https://github.com/adafruit/Adafruit_CircuitPython_BusDevice',
 
     # Author details
     author='Adafruit Industries',
-    author_email='support@adafruit.com',
+    author_email='circuitpython@adafruit.com',
+
+    install_requires=['Adafruit-Blinka'],
 
     # Choose your license
     license='MIT',
