@@ -26,7 +26,9 @@ deploy:
   on:
     tags: true
 install:
+- pip install -r requirements.txt
 - pip install pylint circuitpython-build-tools Sphinx sphinx-rtd-theme
+- pip install --force-reinstall pylint==1.9.2
 script:
 - pylint adafruit_bus_device/*.py
 - ([[ ! -d "examples" ]] || pylint --disable=missing-docstring,invalid-name examples/*.py)
