@@ -102,7 +102,7 @@ class I2CDevice:
         self.i2c.writeto(self.device_address, buf, **kwargs)
 
 #pylint: disable-msg=too-many-arguments
-    def write_then_readinto(self, out_buffer, in_buffer,
+    def write_then_readinto(self, out_buffer, in_buffer, *,
                             out_start=0, out_end=None, in_start=0, in_end=None, stop=True):
         """
         Write the bytes from ``out_buffer`` to the device, then immediately
