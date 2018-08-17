@@ -57,7 +57,7 @@ class I2CDevice:
                 device.write(bytes_read)
     """
     def __init__(self, i2c, device_address):
-        # Verify that a deivce with that address exists.
+        # Verify that a device with that address exists.
         while not i2c.try_lock():
             pass
         try:
@@ -101,6 +101,7 @@ class I2CDevice:
         """
         self.i2c.writeto(self.device_address, buf, **kwargs)
 
+#pylint: disable-msg=too-many-arguments
     def write_then_readinto(self, out_buffer, in_buffer,
                             out_start=0, out_end=None, in_start=0, in_end=None, stop=True):
         """
@@ -135,6 +136,8 @@ class I2CDevice:
             # If we don't have a special implementation, we can fake it with two calls
             self.write(out_buffer, start=out_start, end=out_end, stop=stop)
             self.readinto(in_buffer, start=in_start, end=in_end)
+
+#pylint: enable-msg=too-many-arguments
 
     def __enter__(self):
         while not self.i2c.try_lock():
