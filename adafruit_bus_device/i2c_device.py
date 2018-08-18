@@ -128,6 +128,10 @@ class I2CDevice:
         :param int in_end: Index to write up to but not include
         :param bool stop: If true, output an I2C stop condition after the buffer is written
         """
+        if out_end is None:
+            out_end = len(out_buffer)
+        if in_end is None:
+            in_end = len(in_buffer)
         if hasattr(self.i2c, 'writeto_then_readfrom'):
             # In linux, at least, this is a special kernel function call
             self.i2c.writeto_then_readfrom(self.device_address, out_buffer, in_buffer,
