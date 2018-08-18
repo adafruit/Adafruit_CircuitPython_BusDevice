@@ -131,7 +131,8 @@ class I2CDevice:
         if hasattr(self.i2c, 'writeto_then_readfrom'):
             # In linux, at least, this is a special kernel function call
             self.i2c.writeto_then_readfrom(self.device_address, out_buffer, in_buffer,
-                                           out_start, out_end, in_start, in_end, stop)
+                                           out_start=out_start, out_end=out_end,
+                                           in_start=in_start, in_end=in_end, stop=stop)
         else:
             # If we don't have a special implementation, we can fake it with two calls
             self.write(out_buffer, start=out_start, end=out_end, stop=stop)
