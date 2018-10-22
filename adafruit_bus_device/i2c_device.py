@@ -57,11 +57,11 @@ class I2CDevice:
                 device.write(bytes_read)
     """
     def __init__(self, i2c, device_address):
-        # Verify that a device with that address exists.
+        # write non-zero byte value to verify device exists at address
         while not i2c.try_lock():
             pass
         try:
-            i2c.writeto(device_address, b'')
+            i2c.writeto(device_address, b'x')
         except OSError:
             raise ValueError("No I2C device at address: %x" % device_address)
         finally:
