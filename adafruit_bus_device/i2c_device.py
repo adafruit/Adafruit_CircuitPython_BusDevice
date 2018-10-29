@@ -57,11 +57,15 @@ class I2CDevice:
                 device.write(bytes_read)
     """
     def __init__(self, i2c, device_address):
-        # write non-zero byte value to verify device exists at address
+        """
+        Try to read a byte from an address,
+        if you get an OSError it means the device is not there
+        """
         while not i2c.try_lock():
             pass
         try:
-            i2c.writeto(device_address, b'x')
+            result = bytearray(2)
+            i2c.readfrom_into(device_address, result)
         except OSError:
             raise ValueError("No I2C device at address: %x" % device_address)
         finally:
