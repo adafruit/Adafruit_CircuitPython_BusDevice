@@ -64,7 +64,7 @@ class I2CDevice:
         while not i2c.try_lock():
             pass
         try:
-            result = bytearray(2)
+            result = bytearray(1)
             i2c.readfrom_into(device_address, result)
         except OSError:
             raise ValueError("No I2C device at address: %x" % device_address)
