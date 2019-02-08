@@ -57,7 +57,7 @@ class I2CDevice:
                 device.write(bytes_read)
     """
 
-    def __init__(self, i2c, device_address):
+    def __init__(self, i2c, device_address, *, debug=False):
         """
         Try to read a byte from an address,
         if you get an OSError it means the device is not there
@@ -79,6 +79,7 @@ class I2CDevice:
 
         self.i2c = i2c
         self.device_address = device_address
+        self._debug = debug
 
     def readinto(self, buf, **kwargs):
         """
@@ -94,6 +95,8 @@ class I2CDevice:
         :param int end: Index to write up to but not include
         """
         self.i2c.readfrom_into(self.device_address, buf, **kwargs)
+        if self._debug:
+            print("i2c_device.readinto:", [hex(i) for i in buf])
 
     def write(self, buf, **kwargs):
         """
@@ -110,6 +113,8 @@ class I2CDevice:
         :param bool stop: If true, output an I2C stop condition after the buffer is written
         """
         self.i2c.writeto(self.device_address, buf, **kwargs)
+        if self._debug:
+            print("i2c_device.write:", [hex(i) for i in buf])
 
 #pylint: disable-msg=too-many-arguments
     def write_then_readinto(self, out_buffer, in_buffer, *,
@@ -143,14 +148,26 @@ class I2CDevice:
         if in_end is None:
             in_end = len(in_buffer)
         if hasattr(self.i2c, 'writeto_then_readfrom'):
+            if self._debug:
+                print("i2c_device.writeto_then_readfrom.out_buffer:",
+                      [hex(i) for i in out_buffer[out_start:out_end]])
             # In linux, at least, this is a special kernel function call
             self.i2c.writeto_then_readfrom(self.device_address, out_buffer, in_buffer,
                                            out_start=out_start, out_end=out_end,
                                            in_start=in_start, in_end=in_end, stop=stop)
+            if self._debug:
+                print("i2c_device.writeto_then_readfrom.in_buffer:",
+                      [hex(i) for i in in_buffer[in_start:in_end]])
         else:
             # If we don't have a special implementation, we can fake it with two calls
             self.write(out_buffer, start=out_start, end=out_end, stop=stop)
+            if self._debug:
+                print("i2c_device.write_then_readinto.write.out_buffer:",
+                      [hex(i) for i in out_buffer[out_start:out_end]])
             self.readinto(in_buffer, start=in_start, end=in_end)
+            if self._debug:
+                print("i2c_device.write_then_readinto.readinto.in_buffer:",
+                      [hex(i) for i in in_buffer[in_start:in_end]])
 
 #pylint: enable-msg=too-many-arguments
 
