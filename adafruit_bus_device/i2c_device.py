@@ -148,13 +148,14 @@ class I2CDevice:
         if in_end is None:
             in_end = len(in_buffer)
         if hasattr(self.i2c, 'writeto_then_readfrom'):
+            if self._debug:
+                print("i2c_device.writeto_then_readfrom.out_buffer:",
+                      [hex(i) for i in out_buffer[out_start:out_end]])
             # In linux, at least, this is a special kernel function call
             self.i2c.writeto_then_readfrom(self.device_address, out_buffer, in_buffer,
                                            out_start=out_start, out_end=out_end,
                                            in_start=in_start, in_end=in_end, stop=stop)
             if self._debug:
-                print("i2c_device.writeto_then_readfrom.out_buffer:",
-                      [hex(i) for i in out_buffer[out_start:out_end]])
                 print("i2c_device.writeto_then_readfrom.in_buffer:",
                       [hex(i) for i in in_buffer[in_start:in_end]])
         else:
