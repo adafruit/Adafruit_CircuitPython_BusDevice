@@ -153,18 +153,20 @@ class I2CDevice:
                                            out_start=out_start, out_end=out_end,
                                            in_start=in_start, in_end=in_end, stop=stop)
             if self._debug:
-                print("i2c_device.writeto_then_readfrom.out_buffer:", [hex(i) for i in out_buffer])
-                print("i2c_device.writeto_then_readfrom.in_buffer:", [hex(i) for i in in_buffer])
+                print("i2c_device.writeto_then_readfrom.out_buffer:",
+                      [hex(i) for i in out_buffer[out_start:out_end]])
+                print("i2c_device.writeto_then_readfrom.in_buffer:",
+                      [hex(i) for i in in_buffer[in_start:in_end]])
         else:
             # If we don't have a special implementation, we can fake it with two calls
             self.write(out_buffer, start=out_start, end=out_end, stop=stop)
             if self._debug:
                 print("i2c_device.write_then_readinto.write.out_buffer:",
-                      [hex(i) for i in out_buffer])
+                      [hex(i) for i in out_buffer[out_start:out_end]])
             self.readinto(in_buffer, start=in_start, end=in_end)
             if self._debug:
                 print("i2c_device.write_then_readinto.readinto.in_buffer:",
-                      [hex(i) for i in in_buffer])
+                      [hex(i) for i in in_buffer[in_start:in_end]])
 
 #pylint: enable-msg=too-many-arguments
 
