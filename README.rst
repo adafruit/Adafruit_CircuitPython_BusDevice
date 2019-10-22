@@ -32,6 +32,31 @@ To install:
 #. Download and unzip the `latest release zip <https://github.com/adafruit/Adafruit_CircuitPython_BusDevice/releases>`_.
 #. Copy the unzipped ``adafruit_bus_device`` to the ``lib`` directory on the ``CIRCUITPY`` drive.
 
+Installing from PyPI
+====================
+
+On supported GNU/Linux systems like the Raspberry Pi, you can install the driver locally `from
+PyPI <https://pypi.org/project/adafruit-circuitpython-busdevice/>`_. To install for current user:
+
+.. code-block:: shell
+
+    pip3 install adafruit-circuitpython-busdevice
+
+To install system-wide (this may be required in some cases):
+
+.. code-block:: shell
+
+    sudo pip3 install adafruit-circuitpython-busdevice
+
+To install in a virtual environment in your current project:
+
+.. code-block:: shell
+
+    mkdir project-name && cd project-name
+    python3 -m venv .env
+    source .env/bin/activate
+    pip3 install adafruit-circuitpython-busdevice
+    
 Usage Example
 =============
 
