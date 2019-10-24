@@ -28,11 +28,13 @@ PyPI <https://pypi.org/project/adafruit-circuitpython-busdevice/>`_. To install 
     pip3 install adafruit-circuitpython-busdevice
     
 To install system-wide (this may be required in some cases):
+
 .. code-block:: shell
     
     sudo pip3 install adafruit-circuitpython-busdevice
    
 To install in a virtual environment in your current project:
+
 .. code-block:: shell
 
     mkdir project-name && cd project-name
