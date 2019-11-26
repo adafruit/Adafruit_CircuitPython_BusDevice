@@ -154,8 +154,8 @@ class I2CDevice:
     def __probe_for_device(self):
         """
         Try to read a byte from an address,
-        if you get an OSError it means the device is not there 
-        or that the device does not support these means of probing 
+        if you get an OSError it means the device is not there
+        or that the device does not support these means of probing
         """
         while not self.i2c.try_lock():
             pass
