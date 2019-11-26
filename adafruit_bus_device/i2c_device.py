@@ -35,6 +35,7 @@ class I2CDevice:
 
     :param ~busio.I2C i2c: The I2C bus the device is on
     :param int device_address: The 7 bit device address
+    :param bool probe: Probe for the device upon object creation, default is true
 
     .. note:: This class is **NOT** built into CircuitPython. See
       :ref:`here for install instructions <bus_device_installation>`.
@@ -57,28 +58,13 @@ class I2CDevice:
                 device.write(bytes_read)
     """
 
-    def __init__(self, i2c, device_address):
-        """
-        Try to read a byte from an address,
-        if you get an OSError it means the device is not there
-        """
-        while not i2c.try_lock():
-            pass
-        try:
-            i2c.writeto(device_address, b'')
-        except OSError:
-            # some OS's dont like writing an empty bytesting...
-            # Retry by reading a byte
-            try:
-                result = bytearray(1)
-                i2c.readfrom_into(device_address, result)
-            except OSError:
-                raise ValueError("No I2C device at address: %x" % device_address)
-        finally:
-            i2c.unlock()
+    def __init__(self, i2c, device_address, probe=True):
 
         self.i2c = i2c
         self.device_address = device_address
+
+        if probe:
+            self.__probe_for_device()
 
     def readinto(self, buf, **kwargs):
         """
@@ -164,3 +150,24 @@ class I2CDevice:
     def __exit__(self, *exc):
         self.i2c.unlock()
         return False
+
+    def __probe_for_device(self):
+        """
+        Try to read a byte from an address,
+        if you get an OSError it means the device is not there
+        or that the device does not support these means of probing
+        """
+        while not self.i2c.try_lock():
+            pass
+        try:
+            self.i2c.writeto(self.device_address, b'')
+        except OSError:
+            # some OS's dont like writing an empty bytesting...
+            # Retry by reading a byte
+            try:
+                result = bytearray(1)
+                self.i2c.readfrom_into(self.device_address, result)
+            except OSError:
+                raise ValueError("No I2C device at address: %x" % self.device_address)
+        finally:
+            self.i2c.unlock()
