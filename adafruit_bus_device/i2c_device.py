@@ -60,11 +60,11 @@ class I2CDevice:
 
     def __init__(self, i2c, device_address, probe=True):
 
-        if probe:
-            self.__probe_for_device()
-
         self.i2c = i2c
         self.device_address = device_address
+
+        if probe:
+            self.__probe_for_device()
 
     def readinto(self, buf, **kwargs):
         """
@@ -157,17 +157,17 @@ class I2CDevice:
         if you get an OSError it means the device is not there 
         or that the device does not support these means of probing 
         """
-        while not i2c.try_lock():
+        while not self.i2c.try_lock():
             pass
         try:
-            i2c.writeto(device_address, b'')
+            self.i2c.writeto(self.device_address, b'')
         except OSError:
             # some OS's dont like writing an empty bytesting...
             # Retry by reading a byte
             try:
                 result = bytearray(1)
-                i2c.readfrom_into(device_address, result)
+                self.i2c.readfrom_into(self.device_address, result)
             except OSError:
-                raise ValueError("No I2C device at address: %x" % device_address)
+                raise ValueError("No I2C device at address: %x" % self.device_address)
         finally:
-            i2c.unlock()
+            self.i2c.unlock()
