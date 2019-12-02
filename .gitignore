@@ -5,5 +5,4 @@ dist/
 _build/
 __pycache__
 .env
-build*
 bundles
