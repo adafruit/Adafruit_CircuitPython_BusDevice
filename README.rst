@@ -9,7 +9,7 @@ Adafruit CircuitPython BusDevice
     :target: https://discord.gg/nBQh6qu
     :alt: Discord
 
-.. image:: https://github.com/adafruit/Adafruit_CircuitPython_BusDevice/workflows/Build%CI/badge.svg
+.. image:: https://github.com/adafruit/Adafruit_CircuitPython_BusDevice/workflows/Build%20CI/badge.svg
     :target: https://github.com/adafruit/Adafruit_CircuitPython_BusDevice/actions/
     :alt: Build Status
 
