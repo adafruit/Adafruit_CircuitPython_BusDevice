@@ -9,8 +9,8 @@ Adafruit CircuitPython BusDevice
     :target: https://discord.gg/nBQh6qu
     :alt: Discord
 
-.. image:: https://travis-ci.com/adafruit/Adafruit_CircuitPython_BusDevice.svg?branch=master
-    :target: https://travis-ci.com/adafruit/Adafruit_CircuitPython_BusDevice
+.. image:: https://github.com/adafruit/Adafruit_CircuitPython_BusDevice/workflows/Build%20CI/badge.svg
+    :target: https://github.com/adafruit/Adafruit_CircuitPython_BusDevice/actions/
     :alt: Build Status
 
 The ``I2CDevice`` and ``SPIDevice`` helper classes make managing transaction state
