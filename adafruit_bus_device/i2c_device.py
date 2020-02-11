@@ -61,12 +61,13 @@ class I2CDevice:
     def __init__(self, i2c, device_address, probe=True):
 
         self.i2c = i2c
+        self._has_write_read = hasattr(self.i2c, 'writeto_then_readfrom')
         self.device_address = device_address
 
         if probe:
             self.__probe_for_device()
 
-    def readinto(self, buf, **kwargs):
+    def readinto(self, buf, *, start=0, end=None):
         """
         Read into ``buf`` from the device. The number of bytes read will be the
         length of ``buf``.
@@ -79,9 +80,9 @@ class I2CDevice:
         :param int start: Index to start writing at
         :param int end: Index to write up to but not include
         """
-        self.i2c.readfrom_into(self.device_address, buf, **kwargs)
+        self.i2c.readfrom_into(self.device_address, buf, start=start, end=end)
 
-    def write(self, buf, **kwargs):
+    def write(self, buf, *, start=0, end=None, stop=True):
         """
         Write the bytes from ``buffer`` to the device. Transmits a stop bit if
         ``stop`` is set.
@@ -95,7 +96,7 @@ class I2CDevice:
         :param int end: Index to read up to but not include
         :param bool stop: If true, output an I2C stop condition after the buffer is written
         """
-        self.i2c.writeto(self.device_address, buf, **kwargs)
+        self.i2c.writeto(self.device_address, buf, start=start, end=end, stop=stop)
 
 #pylint: disable-msg=too-many-arguments
     def write_then_readinto(self, out_buffer, in_buffer, *,
@@ -129,7 +130,7 @@ class I2CDevice:
             in_end = len(in_buffer)
         if stop:
             raise ValueError("Stop must be False. Use writeto instead.")
-        if hasattr(self.i2c, 'writeto_then_readfrom'):
+        if self._has_write_read:
             # In linux, at least, this is a special kernel function call
             self.i2c.writeto_then_readfrom(self.device_address, out_buffer, in_buffer,
                                            out_start=out_start, out_end=out_end,
@@ -147,7 +148,7 @@ class I2CDevice:
             pass
         return self
 
-    def __exit__(self, *exc):
+    def __exit__(self, exc_type, exc_val, exc_tb):
         self.i2c.unlock()
         return False
 
