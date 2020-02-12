@@ -85,7 +85,7 @@ class SPIDevice:
             self.chip_select.value = False
         return self.spi
 
-    def __exit__(self, *exc):
+    def __exit__(self, exc_type, exc_val, exc_tb):
         if self.chip_select:
             self.chip_select.value = True
         if self.extra_clocks > 0:
