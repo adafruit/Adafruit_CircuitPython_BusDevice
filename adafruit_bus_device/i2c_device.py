@@ -78,8 +78,10 @@ class I2CDevice:
 
         :param bytearray buffer: buffer to write into
         :param int start: Index to start writing at
-        :param int end: Index to write up to but not include
+        :param int end: Index to write up to but not include; if None, use ``len(buf)``
         """
+        if end is None:
+            end = len(buf)
         self.i2c.readfrom_into(self.device_address, buf, start=start, end=end)
 
     def write(self, buf, *, start=0, end=None, stop=True):
@@ -93,9 +95,11 @@ class I2CDevice:
 
         :param bytearray buffer: buffer containing the bytes to write
         :param int start: Index to start writing from
-        :param int end: Index to read up to but not include
+        :param int end: Index to read up to but not include; if None, use ``len(buf)``
         :param bool stop: If true, output an I2C stop condition after the buffer is written
         """
+        if end is None:
+            end = len(buf)
         self.i2c.writeto(self.device_address, buf, start=start, end=end, stop=stop)
 
 #pylint: disable-msg=too-many-arguments
@@ -119,9 +123,9 @@ class I2CDevice:
         :param bytearray out_buffer: buffer containing the bytes to write
         :param bytearray in_buffer: buffer containing the bytes to read into
         :param int out_start: Index to start writing from
-        :param int out_end: Index to read up to but not include
+        :param int out_end: Index to read up to but not include; if None, use ``len(out_buffer)``
         :param int in_start: Index to start writing at
-        :param int in_end: Index to write up to but not include
+        :param int in_end: Index to write up to but not include; if None, use ``len(in_buffer)``
         :param bool stop: Deprecated
         """
         if out_end is None:
