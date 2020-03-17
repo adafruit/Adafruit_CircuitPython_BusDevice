@@ -28,6 +28,7 @@
 __version__ = "0.0.0-auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_BusDevice.git"
 
+
 class I2CDevice:
     """
     Represents a single I2C device and manages locking the bus and the device
@@ -61,7 +62,7 @@ class I2CDevice:
     def __init__(self, i2c, device_address, probe=True):
 
         self.i2c = i2c
-        self._has_write_read = hasattr(self.i2c, 'writeto_then_readfrom')
+        self._has_write_read = hasattr(self.i2c, "writeto_then_readfrom")
         self.device_address = device_address
 
         if probe:
@@ -102,9 +103,18 @@ class I2CDevice:
             end = len(buf)
         self.i2c.writeto(self.device_address, buf, start=start, end=end, stop=stop)
 
-#pylint: disable-msg=too-many-arguments
-    def write_then_readinto(self, out_buffer, in_buffer, *,
-                            out_start=0, out_end=None, in_start=0, in_end=None, stop=False):
+    # pylint: disable-msg=too-many-arguments
+    def write_then_readinto(
+        self,
+        out_buffer,
+        in_buffer,
+        *,
+        out_start=0,
+        out_end=None,
+        in_start=0,
+        in_end=None,
+        stop=False
+    ):
         """
         Write the bytes from ``out_buffer`` to the device, then immediately
         reads into ``in_buffer`` from the device. The number of bytes read
@@ -136,16 +146,22 @@ class I2CDevice:
             raise ValueError("Stop must be False. Use writeto instead.")
         if self._has_write_read:
             # In linux, at least, this is a special kernel function call
-            self.i2c.writeto_then_readfrom(self.device_address, out_buffer, in_buffer,
-                                           out_start=out_start, out_end=out_end,
-                                           in_start=in_start, in_end=in_end)
+            self.i2c.writeto_then_readfrom(
+                self.device_address,
+                out_buffer,
+                in_buffer,
+                out_start=out_start,
+                out_end=out_end,
+                in_start=in_start,
+                in_end=in_end,
+            )
 
         else:
             # If we don't have a special implementation, we can fake it with two calls
             self.write(out_buffer, start=out_start, end=out_end, stop=False)
             self.readinto(in_buffer, start=in_start, end=in_end)
 
-#pylint: enable-msg=too-many-arguments
+    # pylint: enable-msg=too-many-arguments
 
     def __enter__(self):
         while not self.i2c.try_lock():
@@ -165,7 +181,7 @@ class I2CDevice:
         while not self.i2c.try_lock():
             pass
         try:
-            self.i2c.writeto(self.device_address, b'')
+            self.i2c.writeto(self.device_address, b"")
         except OSError:
             # some OS's dont like writing an empty bytesting...
             # Retry by reading a byte
