@@ -77,7 +77,7 @@ class SPIDevice:
         polarity=0,
         phase=0,
         extra_clocks=0,
-        timeout=None
+        timeout=.25
     ):
         self.spi = spi
         self.baudrate = baudrate
