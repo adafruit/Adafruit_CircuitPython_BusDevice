@@ -60,7 +60,7 @@ class I2CDevice:
                 device.write(bytes_read)
     """
 
-    def __init__(self, i2c, device_address, probe=True, timeout=None):
+    def __init__(self, i2c, device_address, probe=True, timeout=.25):
 
         self.i2c = i2c
         self._has_write_read = hasattr(self.i2c, "writeto_then_readfrom")
