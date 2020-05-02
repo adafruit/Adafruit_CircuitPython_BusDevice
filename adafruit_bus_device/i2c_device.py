@@ -174,7 +174,7 @@ class I2CDevice:
                 if (self.timeout > (time.monotonic() - lock_start_time)):
                     raise Exception("'I2CDevice' lock timed out")
         else:
-            while not self.spi.try_lock():
+            while not self.i2c.try_lock():
                 pass
         return self
 
