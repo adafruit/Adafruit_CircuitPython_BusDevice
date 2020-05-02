@@ -25,6 +25,7 @@
 `adafruit_bus_device.spi_device` - SPI Bus Device
 ====================================================
 """
+import time
 
 __version__ = "0.0.0-auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_BusDevice.git"
@@ -76,6 +77,7 @@ class SPIDevice:
         polarity=0,
         phase=0,
         extra_clocks=0
+        timeout=None
     ):
         self.spi = spi
         self.baudrate = baudrate
@@ -83,12 +85,19 @@ class SPIDevice:
         self.phase = phase
         self.extra_clocks = extra_clocks
         self.chip_select = chip_select
+        self.timeout = timeout
         if self.chip_select:
             self.chip_select.switch_to_output(value=True)
 
     def __enter__(self):
-        while not self.spi.try_lock():
-            pass
+        if self.timeout is not None:
+            lock_start_time = time.monotonic()
+            while not self.spi.try_lock():
+                if (self.timeout > (time.monotonic() - lock_start_time)):
+                    raise Exception("'SPIDevice' lock timed out")
+        else:
+            while not self.spi.try_lock():
+                pass
         self.spi.configure(
             baudrate=self.baudrate, polarity=self.polarity, phase=self.phase
         )
