@@ -77,7 +77,7 @@ class SPIDevice:
         polarity=0,
         phase=0,
         extra_clocks=0,
-        timeout=.25
+        timeout=0.25
     ):
         self.spi = spi
         self.baudrate = baudrate
@@ -93,7 +93,7 @@ class SPIDevice:
         if self.timeout is not None:
             lock_start_time = time.monotonic()
             while not self.spi.try_lock():
-                if (self.timeout > (time.monotonic() - lock_start_time)):
+                if self.timeout > (time.monotonic() - lock_start_time):
                     raise Exception("'SPIDevice' lock timed out")
         else:
             while not self.spi.try_lock():

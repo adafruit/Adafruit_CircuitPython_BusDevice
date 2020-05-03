@@ -60,14 +60,14 @@ class I2CDevice:
                 device.write(bytes_read)
     """
 
-    def __init__(self, i2c, device_address, probe=True, timeout=.25):
+    def __init__(self, i2c, device_address, probe=True, timeout=0.25):
 
         self.i2c = i2c
         self._has_write_read = hasattr(self.i2c, "writeto_then_readfrom")
         self.device_address = device_address
-        
+
         self.timeout = timeout
-        
+
         if probe:
             self.__probe_for_device()
 
@@ -167,11 +167,11 @@ class I2CDevice:
     # pylint: enable-msg=too-many-arguments
 
     def __enter__(self):
-       
+
         if self.timeout is not None:
             lock_start_time = time.monotonic()
             while not self.i2c.try_lock():
-                if (self.timeout > (time.monotonic() - lock_start_time)):
+                if self.timeout > (time.monotonic() - lock_start_time):
                     raise Exception("'I2CDevice' lock timed out")
         else:
             while not self.i2c.try_lock():
