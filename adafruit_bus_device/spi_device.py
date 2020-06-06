@@ -92,6 +92,7 @@ class SPIDevice:
             self.chip_select.switch_to_output(value=True)
 
     def __enter__(self):
+        # pylint: disable-msg=no-member
         if self.timeout is not None:
             lock_start_time = time.monotonic_ns() // 1000000
             while not self.spi.try_lock():
