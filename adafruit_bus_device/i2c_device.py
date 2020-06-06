@@ -171,10 +171,12 @@ class I2CDevice:
 
     def __enter__(self):
         if self.timeout is not None:
-            lock_start_time = time.monotonic_ns()//1000000
+            lock_start_time = time.monotonic_ns() // 1000000
             while not self.i2c.try_lock():
                 if self.timeout > (time.monotonic() - lock_start_time):
-                    raise RuntimeError(f"'SPIDevice' lock timed out after {self.timeout} milliseconds")
+                    raise RuntimeError(
+                        f"'SPIDevice' lock timed out after {self.timeout} milliseconds"
+                    )
         else:
             while not self.i2c.try_lock():
                 pass
