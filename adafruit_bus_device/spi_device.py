@@ -97,7 +97,7 @@ class SPIDevice:
             lock_start_time = time.monotonic_ns() // 1000000
             while not self.spi.try_lock():
                 if self.timeout > (time.monotonic() - lock_start_time):
-                    raise RuntimeError(f"'SPIDevice' lock timed out")
+                    raise RuntimeError("'SPIDevice' lock timed out")
         else:
             while not self.spi.try_lock():
                 pass
