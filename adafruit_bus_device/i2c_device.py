@@ -38,6 +38,9 @@ class I2CDevice:
     :param ~busio.I2C i2c: The I2C bus the device is on
     :param int device_address: The 7 bit device address
     :param bool probe: Probe for the device upon object creation, default is true
+    :param int timeout: the amount of time (in milliseconds) to wait before timing out when trying
+        to lock, defaults to 250 milliseconds. to disable any timeout set 'timeout=None'.
+        if the lock times out a RuntimeError will be raised
 
     .. note:: This class is **NOT** built into CircuitPython. See
       :ref:`here for install instructions <bus_device_installation>`.
@@ -60,7 +63,7 @@ class I2CDevice:
                 device.write(bytes_read)
     """
 
-    def __init__(self, i2c, device_address, probe=True, timeout=0.25):
+    def __init__(self, i2c, device_address, probe=True, timeout=250):
 
         self.i2c = i2c
         self._has_write_read = hasattr(self.i2c, "writeto_then_readfrom")
@@ -116,7 +119,7 @@ class I2CDevice:
         out_end=None,
         in_start=0,
         in_end=None,
-        stop=False
+        stop=False,
     ):
         """
         Write the bytes from ``out_buffer`` to the device, then immediately
@@ -167,12 +170,11 @@ class I2CDevice:
     # pylint: enable-msg=too-many-arguments
 
     def __enter__(self):
-
         if self.timeout is not None:
-            lock_start_time = time.monotonic()
+            lock_start_time = time.monotonic_ns()//1000000
             while not self.i2c.try_lock():
                 if self.timeout > (time.monotonic() - lock_start_time):
-                    raise Exception("'I2CDevice' lock timed out")
+                    raise RuntimeError(f"'SPIDevice' lock timed out after {self.timeout} milliseconds")
         else:
             while not self.i2c.try_lock():
                 pass

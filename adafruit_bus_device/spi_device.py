@@ -41,6 +41,8 @@ class SPIDevice:
         DigitalInOut API.
     :param int extra_clocks: The minimum number of clock cycles to cycle the bus after CS is high.
         (Used for SD cards.)
+    :param int timeout: the amount of time (in milliseconds) to wait before timing out when trying
+        to lock, defaults to 250 milliseconds. to disable any timeout set 'timeout=None'.
 
     .. note:: This class is **NOT** built into CircuitPython. See
       :ref:`here for install instructions <bus_device_installation>`.
@@ -77,7 +79,7 @@ class SPIDevice:
         polarity=0,
         phase=0,
         extra_clocks=0,
-        timeout=0.25
+        timeout=250,
     ):
         self.spi = spi
         self.baudrate = baudrate
@@ -91,22 +93,23 @@ class SPIDevice:
 
     def __enter__(self):
         if self.timeout is not None:
-            lock_start_time = time.monotonic()
+            lock_start_time = time.monotonic_ns()//1000000
             while not self.spi.try_lock():
                 if self.timeout > (time.monotonic() - lock_start_time):
-                    raise Exception("'SPIDevice' lock timed out")
+                    raise RuntimeError(f"'SPIDevice' lock timed out after {self.timeout} milliseconds")
         else:
             while not self.spi.try_lock():
                 pass
+
         self.spi.configure(
             baudrate=self.baudrate, polarity=self.polarity, phase=self.phase
         )
-        if self.chip_select:
+        if self.chip_select is not None:
             self.chip_select.value = False
         return self.spi
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        if self.chip_select:
+        if self.chip_select is not None:
             self.chip_select.value = True
         if self.extra_clocks > 0:
             buf = bytearray(1)
