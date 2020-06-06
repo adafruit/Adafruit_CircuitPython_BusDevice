@@ -170,6 +170,7 @@ class I2CDevice:
     # pylint: enable-msg=too-many-arguments
 
     def __enter__(self):
+        # pylint: disable-msg=no-member
         if self.timeout is not None:
             lock_start_time = time.monotonic_ns() // 1000000
             while not self.i2c.try_lock():
