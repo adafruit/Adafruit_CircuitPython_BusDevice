@@ -175,7 +175,7 @@ class I2CDevice:
             lock_start_time = time.monotonic()
             while not self.i2c.try_lock():
                 if self.timeout > (time.monotonic() - lock_start_time):
-                    raise RuntimeError(f"'I2CDevice' lock timed out")
+                    raise RuntimeError("'I2CDevice' lock timed out")
         else:
             while not self.i2c.try_lock():
                 pass
