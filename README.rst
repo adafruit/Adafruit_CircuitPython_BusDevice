@@ -6,7 +6,7 @@ Adafruit CircuitPython BusDevice
     :alt: Documentation Status
 
 .. image :: https://img.shields.io/discord/327254708534116352.svg
-    :target: https://discord.gg/nBQh6qu
+    :target: https://adafru.it/discord
     :alt: Discord
 
 .. image:: https://github.com/adafruit/Adafruit_CircuitPython_BusDevice/workflows/Build%20CI/badge.svg
