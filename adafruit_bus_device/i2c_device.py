@@ -99,7 +99,10 @@ class I2CDevice:
         :param int end: Index to read up to but not include; if None, use ``len(buf)``
         """
         if stop is not None:
-            print("Warning: deprecated stop= argument specified.  Deprecated. Will be removed in a future release and act as stop=True")
+            print(
+                "Warning: deprecated stop= argument specified.\n"
+                "Will be removed in a future release and act as stop=True"
+            )
         if end is None:
             end = len(buf)
         self.i2c.writeto(self.device_address, buf, start=start, end=end)
