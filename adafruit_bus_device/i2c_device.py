@@ -110,7 +110,7 @@ class I2CDevice:
         out_start=0,
         out_end=None,
         in_start=0,
-        in_end=None,
+        in_end=None
     ):
         """
         Write the bytes from ``out_buffer`` to the device, then immediately
