@@ -177,6 +177,8 @@ class I2CDevice:
                 result = bytearray(1)
                 self.i2c.readfrom_into(self.device_address, result)
             except OSError:
-                raise ValueError("No I2C device at address: %x" % self.device_address)
+                # pylint: disable=raise-missing-from
+                raise ValueError("No I2C device at address: 0x%x" % self.device_address)
+                # pylint: enable=raise-missing-from
         finally:
             self.i2c.unlock()
