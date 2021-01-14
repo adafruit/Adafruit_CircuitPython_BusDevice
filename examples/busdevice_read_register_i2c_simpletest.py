@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2021 ladyada for Adafruit Industries
+# SPDX-License-Identifier: MIT
+
 import busio
 import board
 from adafruit_bus_device.i2c_device import I2CDevice
