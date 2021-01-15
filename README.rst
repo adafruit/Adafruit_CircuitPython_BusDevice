@@ -24,15 +24,15 @@ On supported GNU/Linux systems like the Raspberry Pi, you can install the driver
 PyPI <https://pypi.org/project/adafruit-circuitpython-busdevice/>`_. To install for current user:
 
 .. code-block:: shell
-    
+
     pip3 install adafruit-circuitpython-busdevice
-    
+
 To install system-wide (this may be required in some cases):
 
 .. code-block:: shell
-    
+
     sudo pip3 install adafruit-circuitpython-busdevice
-   
+
 To install in a virtual environment in your current project:
 
 .. code-block:: shell
@@ -41,7 +41,7 @@ To install in a virtual environment in your current project:
     python3 -m venv .env
     source .env/bin/activate
     pip3 install adafruit-circuitpython-busdevice
-    
+
 Usage Example
 =============
 
