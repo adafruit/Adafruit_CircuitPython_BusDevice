@@ -1,24 +1,6 @@
-# The MIT License (MIT)
+# SPDX-FileCopyrightText: 2016 Scott Shawcroft for Adafruit Industries
 #
-# Copyright (c) 2016 Scott Shawcroft for Adafruit Industries
-#
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-#
-# The above copyright notice and this permission notice shall be included in
-# all copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-# THE SOFTWARE.
+# SPDX-License-Identifier: MIT
 
 """
 `adafruit_bus_device.i2c_device` - I2C Bus Device
@@ -66,7 +48,6 @@ class I2CDevice:
     def __init__(self, i2c, device_address, probe=True, timeout=0.25):
 
         self.i2c = i2c
-        self._has_write_read = hasattr(self.i2c, "writeto_then_readfrom")
         self.device_address = device_address
 
         self.timeout = timeout
@@ -91,10 +72,10 @@ class I2CDevice:
             end = len(buf)
         self.i2c.readfrom_into(self.device_address, buf, start=start, end=end)
 
-    def write(self, buf, *, start=0, end=None, stop=True):
+    def write(self, buf, *, start=0, end=None):
         """
-        Write the bytes from ``buffer`` to the device. Transmits a stop bit if
-        ``stop`` is set.
+        Write the bytes from ``buffer`` to the device, then transmit a stop
+        bit.
 
         If ``start`` or ``end`` is provided, then the buffer will be sliced
         as if ``buffer[start:end]``. This will not cause an allocation like
@@ -103,11 +84,10 @@ class I2CDevice:
         :param bytearray buffer: buffer containing the bytes to write
         :param int start: Index to start writing from
         :param int end: Index to read up to but not include; if None, use ``len(buf)``
-        :param bool stop: If true, output an I2C stop condition after the buffer is written
         """
         if end is None:
             end = len(buf)
-        self.i2c.writeto(self.device_address, buf, start=start, end=end, stop=stop)
+        self.i2c.writeto(self.device_address, buf, start=start, end=end)
 
     # pylint: disable-msg=too-many-arguments
     def write_then_readinto(
@@ -118,8 +98,7 @@ class I2CDevice:
         out_start=0,
         out_end=None,
         in_start=0,
-        in_end=None,
-        stop=False,
+        in_end=None
     ):
         """
         Write the bytes from ``out_buffer`` to the device, then immediately
@@ -142,30 +121,21 @@ class I2CDevice:
         :param int out_end: Index to read up to but not include; if None, use ``len(out_buffer)``
         :param int in_start: Index to start writing at
         :param int in_end: Index to write up to but not include; if None, use ``len(in_buffer)``
-        :param bool stop: Deprecated
         """
         if out_end is None:
             out_end = len(out_buffer)
         if in_end is None:
             in_end = len(in_buffer)
-        if stop:
-            raise ValueError("Stop must be False. Use writeto instead.")
-        if self._has_write_read:
-            # In linux, at least, this is a special kernel function call
-            self.i2c.writeto_then_readfrom(
-                self.device_address,
-                out_buffer,
-                in_buffer,
-                out_start=out_start,
-                out_end=out_end,
-                in_start=in_start,
-                in_end=in_end,
-            )
 
-        else:
-            # If we don't have a special implementation, we can fake it with two calls
-            self.write(out_buffer, start=out_start, end=out_end, stop=False)
-            self.readinto(in_buffer, start=in_start, end=in_end)
+        self.i2c.writeto_then_readfrom(
+            self.device_address,
+            out_buffer,
+            in_buffer,
+            out_start=out_start,
+            out_end=out_end,
+            in_start=in_start,
+            in_end=in_end,
+        )
 
     # pylint: enable-msg=too-many-arguments
 
@@ -202,6 +172,8 @@ class I2CDevice:
                 result = bytearray(1)
                 self.i2c.readfrom_into(self.device_address, result)
             except OSError:
-                raise ValueError("No I2C device at address: %x" % self.device_address)
+                # pylint: disable=raise-missing-from
+                raise ValueError("No I2C device at address: 0x%x" % self.device_address)
+                # pylint: enable=raise-missing-from
         finally:
             self.i2c.unlock()
