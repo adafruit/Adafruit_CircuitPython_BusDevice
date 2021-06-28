@@ -20,6 +20,17 @@ changes such as mode. For I2C, it manages the device address.
 
 .. _bus_device_installation:
 
+.. note:: On microcontroller boards using CircuitPython v6.3.0 or newer, the firmware
+    may already have the ``adafruit_bus_device`` package builtin, thus there may be no
+    need to add this package to your CIRCUITPY drive's "lib" directory. If both the
+    builtin and add-on ``adafruit_bus_device`` packages are present, then some
+    libraries that require this package *might* have problems importing it.
+
+    Please check the `CircuitPython documentation's "module support matrix"
+    <https://circuitpython.readthedocs.io/en/latest/shared-bindings/support_matrix.html>`_
+    to make sure that your board's firmware does include the builtin ``adafruit_bus_device``
+    package.
+
 On supported GNU/Linux systems like the Raspberry Pi, you can install the driver locally `from
 PyPI <https://pypi.org/project/adafruit-circuitpython-busdevice/>`_. To install for current user:
 
