@@ -41,13 +41,21 @@ class I2CDevice:
                 device.write(bytes_read)
     """
 
-    def __init__(self, i2c, device_address, probe=True):
-
+    def __init__(self, i2c, device_address, probe=True, probe_with_write=True):
+        """
+        If probe is true you will probing the device.
+        With probe_with_write you can switch between: 
+        True - a probing with write (& read if OSError)
+        False - only probing with read
+        """
         self.i2c = i2c
         self.device_address = device_address
 
         if probe:
-            self.__probe_for_device()
+            if probe_with_write:
+                self.__write_probe_for_device()
+            else:
+                self.__only_read_probe_for_device()
 
     def readinto(self, buf, *, start=0, end=None):
         """
@@ -142,7 +150,32 @@ class I2CDevice:
         self.i2c.unlock()
         return False
 
-    def __probe_for_device(self):
+    def __write_probe_for_device(self):
+        """
+        Try to write empty byte string to an address.
+        If OSError:
+        Try to read a byte from an address,
+        if you get an OSError it means the device is not there
+        or that the device does not support these means of probing
+        """
+        while not self.i2c.try_lock():
+            pass
+        try:
+            self.i2c.writeto(self.device_address, b"")
+        except OSError:
+            # some OS's dont like writing an empty bytesting...
+            # Retry by reading a byte
+            try:
+                result = bytearray(1)
+                self.i2c.readfrom_into(self.device_address, result)
+            except OSError:
+                # pylint: disable=raise-missing-from
+                raise ValueError("No I2C device at address: 0x%x" % self.device_address)
+                # pylint: enable=raise-missing-from
+        finally:
+            self.i2c.unlock()
+
+    def __only_read_probe_for_device(self):
         """
         Try to read a byte from an address,
         if you get an OSError it means the device is not there
