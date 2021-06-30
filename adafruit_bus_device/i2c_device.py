@@ -151,16 +151,11 @@ class I2CDevice:
         while not self.i2c.try_lock():
             pass
         try:
-            self.i2c.writeto(self.device_address, b"")
+            result = bytearray(1)
+            self.i2c.readfrom_into(self.device_address, result)
         except OSError:
-            # some OS's dont like writing an empty bytesting...
-            # Retry by reading a byte
-            try:
-                result = bytearray(1)
-                self.i2c.readfrom_into(self.device_address, result)
-            except OSError:
-                # pylint: disable=raise-missing-from
-                raise ValueError("No I2C device at address: 0x%x" % self.device_address)
-                # pylint: enable=raise-missing-from
+            # pylint: disable=raise-missing-from
+            raise ValueError("No I2C device at address: 0x%x" % self.device_address)
+            # pylint: enable=raise-missing-from
         finally:
             self.i2c.unlock()
