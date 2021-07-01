@@ -44,7 +44,7 @@ class I2CDevice:
     def __init__(self, i2c, device_address, probe=True, probe_with_write=True):
         """
         If probe is true you will probing the device.
-        With probe_with_write you can switch between: 
+        With probe_with_write you can switch between:
         True - a probing with write (& read if OSError)
         False - only probing with read
         """
