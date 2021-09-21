@@ -21,6 +21,8 @@ class SPIDevice:
     :param ~busio.SPI spi: The SPI bus the device is on
     :param ~digitalio.DigitalInOut chip_select: The chip select pin object that implements the
         DigitalInOut API.
+    :param bool cs_active_value: Set to true if your device requires CS to be active high.
+        Defaults to false.
     :param int extra_clocks: The minimum number of clock cycles to cycle the bus after CS is high.
         (Used for SD cards.)
 
@@ -55,6 +57,7 @@ class SPIDevice:
         spi,
         chip_select=None,
         *,
+        cs_active_value=False,
         baudrate=100000,
         polarity=0,
         phase=0,
@@ -66,6 +69,7 @@ class SPIDevice:
         self.phase = phase
         self.extra_clocks = extra_clocks
         self.chip_select = chip_select
+        self.cs_active_value = cs_active_value
         if self.chip_select:
             self.chip_select.switch_to_output(value=True)
 
@@ -76,12 +80,12 @@ class SPIDevice:
             baudrate=self.baudrate, polarity=self.polarity, phase=self.phase
         )
         if self.chip_select:
-            self.chip_select.value = False
+            self.chip_select.value = self.cs_active_value
         return self.spi
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         if self.chip_select:
-            self.chip_select.value = True
+            self.chip_select.value = not self.cs_active_value
         if self.extra_clocks > 0:
             buf = bytearray(1)
             buf[0] = 0xFF
