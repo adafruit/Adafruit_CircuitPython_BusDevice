@@ -19,4 +19,4 @@ with device as bus_device:
     result = bytearray(1)
     bus_device.readinto(result)
 
-print("".join("{:02x}".format(x) for x in result))
+print("".join([f"{x:02x}" for x in result]))
