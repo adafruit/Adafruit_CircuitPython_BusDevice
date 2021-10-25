@@ -58,6 +58,11 @@ Usage Example
 
 See examples/read_register_i2c.py and examples/read_register_spi.py for examples of the module's usage.
 
+Documentation
+=============
+
+API documentation for this library can be found on `Read the Docs <https://circuitpython.readthedocs.io/projects/busdevice/en/latest/>`_.
+
 Contributing
 ============
 
