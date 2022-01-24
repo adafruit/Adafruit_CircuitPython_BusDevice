@@ -2,7 +2,7 @@ Adafruit CircuitPython BusDevice
 ================================
 
 .. image:: https://readthedocs.org/projects/adafruit-circuitpython-busdevice/badge/?version=latest
-    :target: https://circuitpython.readthedocs.io/projects/busdevice/en/latest/
+    :target: https://docs.circuitpython.org/projects/busdevice/en/latest/
     :alt: Documentation Status
 
 .. image :: https://img.shields.io/discord/327254708534116352.svg
@@ -27,7 +27,7 @@ changes such as mode. For I2C, it manages the device address.
     libraries that require this package *might* have problems importing it.
 
     Please check the `CircuitPython documentation's "module support matrix"
-    <https://circuitpython.readthedocs.io/en/latest/shared-bindings/support_matrix.html>`_
+    <https://docs.circuitpython.org/en/latest/shared-bindings/support_matrix.html>`_
     to make sure that your board's firmware does include the builtin ``adafruit_bus_device``
     package.
 
@@ -61,7 +61,7 @@ See examples/read_register_i2c.py and examples/read_register_spi.py for examples
 Documentation
 =============
 
-API documentation for this library can be found on `Read the Docs <https://circuitpython.readthedocs.io/projects/busdevice/en/latest/>`_.
+API documentation for this library can be found on `Read the Docs <https://docs.circuitpython.org/projects/busdevice/en/latest/>`_.
 
 Contributing
 ============
