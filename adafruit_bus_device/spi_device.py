@@ -94,7 +94,12 @@ class SPIDevice:
             self.chip_select.value = self.cs_active_value
         return self.spi
 
-    def __exit__(self, exc_type: Optional[Type[type]], exc_val: Optional[BaseException], exc_tb: Optional[TracebackType]) -> bool:
+    def __exit__(
+        self,
+        exc_type: Optional[Type[type]],
+        exc_val: Optional[BaseException],
+        exc_tb: Optional[TracebackType],
+    ) -> bool:
         if self.chip_select:
             self.chip_select.value = not self.cs_active_value
         if self.extra_clocks > 0:

@@ -140,12 +140,17 @@ class I2CDevice:
 
     # pylint: enable-msg=too-many-arguments
 
-    def __enter__(self) -> 'I2CDevice':
+    def __enter__(self) -> "I2CDevice":
         while not self.i2c.try_lock():
             pass
         return self
 
-    def __exit__(self, exc_type: Optional[Type[type]], exc_val: Optional[BaseException], exc_tb: Optional[TracebackType]) -> bool:
+    def __exit__(
+        self,
+        exc_type: Optional[Type[type]],
+        exc_val: Optional[BaseException],
+        exc_tb: Optional[TracebackType],
+    ) -> bool:
         self.i2c.unlock()
         return False
 
