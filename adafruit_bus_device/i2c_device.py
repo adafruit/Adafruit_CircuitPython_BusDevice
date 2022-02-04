@@ -8,7 +8,8 @@
 """
 
 try:
-    from typing import Optional
+    from typing import Optional, Type
+    from types import TracebackType
     from busio import I2C
 except ImportError:
     pass
@@ -144,11 +145,11 @@ class I2CDevice:
             pass
         return self
 
-    def __exit__(self, exc_type, exc_val, exc_tb) -> bool:
+    def __exit__(self, exc_type: Optional[Type[type]], exc_val: Optional[BaseException], exc_tb: Optional[TracebackType]) -> bool:
         self.i2c.unlock()
         return False
 
-    def __probe_for_device(self):
+    def __probe_for_device(self) -> None:
         """
         Try to read a byte from an address,
         if you get an OSError it means the device is not there

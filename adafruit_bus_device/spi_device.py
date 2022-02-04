@@ -9,6 +9,14 @@
 ====================================================
 """
 
+try:
+    from typing import Optional, Type
+    from types import TracebackType
+    from busio import SPI
+    from digitalio import DigitalInOut
+except ImportError:
+    pass
+
 __version__ = "0.0.0-auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_BusDevice.git"
 
@@ -54,15 +62,15 @@ class SPIDevice:
 
     def __init__(
         self,
-        spi,
-        chip_select=None,
+        spi: SPI,
+        chip_select: Optional[DigitalInOut] = None,
         *,
-        cs_active_value=False,
-        baudrate=100000,
-        polarity=0,
-        phase=0,
-        extra_clocks=0
-    ):
+        cs_active_value: bool = False,
+        baudrate: int = 100000,
+        polarity: int = 0,
+        phase: int = 0,
+        extra_clocks: int = 0
+    ) -> None:
         self.spi = spi
         self.baudrate = baudrate
         self.polarity = polarity
@@ -73,7 +81,7 @@ class SPIDevice:
         if self.chip_select:
             self.chip_select.switch_to_output(value=True)
 
-    def __enter__(self):
+    def __enter__(self) -> SPI:
         while not self.spi.try_lock():
             pass
         self.spi.configure(
@@ -83,7 +91,7 @@ class SPIDevice:
             self.chip_select.value = self.cs_active_value
         return self.spi
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def __exit__(self, exc_type: Optional[Type[type]], exc_val: Optional[BaseException], exc_tb: Optional[TracebackType]) -> bool:
         if self.chip_select:
             self.chip_select.value = not self.cs_active_value
         if self.extra_clocks > 0:
