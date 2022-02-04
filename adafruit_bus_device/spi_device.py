@@ -31,6 +31,9 @@ class SPIDevice:
         DigitalInOut API.
     :param bool cs_active_value: Set to true if your device requires CS to be active high.
         Defaults to false.
+    :param int baudrate: The SPI baudrate
+    :param int polarity: The SPI polarity
+    :param int phase: The SPI phase
     :param int extra_clocks: The minimum number of clock cycles to cycle the bus after CS is high.
         (Used for SD cards.)
 
