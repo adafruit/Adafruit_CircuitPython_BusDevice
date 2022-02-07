@@ -7,6 +7,18 @@
 ====================================================
 """
 
+try:
+    from typing import Optional, Type
+    from types import TracebackType
+    from busio import I2C
+
+    try:
+        from circuitpython_typing import ReadableBuffer, WriteableBuffer
+    except ImportError:
+        from _typing import ReadableBuffer, WriteableBuffer
+except ImportError:
+    pass
+
 __version__ = "0.0.0-auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_BusDevice.git"
 
@@ -41,7 +53,7 @@ class I2CDevice:
                 device.write(bytes_read)
     """
 
-    def __init__(self, i2c, device_address, probe=True):
+    def __init__(self, i2c: I2C, device_address: int, probe: bool = True) -> None:
 
         self.i2c = i2c
         self.device_address = device_address
@@ -49,7 +61,9 @@ class I2CDevice:
         if probe:
             self.__probe_for_device()
 
-    def readinto(self, buf, *, start=0, end=None):
+    def readinto(
+        self, buf: WriteableBuffer, *, start: int = 0, end: Optional[int] = None
+    ) -> None:
         """
         Read into ``buf`` from the device. The number of bytes read will be the
         length of ``buf``.
@@ -58,7 +72,7 @@ class I2CDevice:
         as if ``buf[start:end]``. This will not cause an allocation like
         ``buf[start:end]`` will so it saves memory.
 
-        :param bytearray buffer: buffer to write into
+        :param ~WriteableBuffer buffer: buffer to write into
         :param int start: Index to start writing at
         :param int end: Index to write up to but not include; if None, use ``len(buf)``
         """
@@ -66,7 +80,9 @@ class I2CDevice:
             end = len(buf)
         self.i2c.readfrom_into(self.device_address, buf, start=start, end=end)
 
-    def write(self, buf, *, start=0, end=None):
+    def write(
+        self, buf: ReadableBuffer, *, start: int = 0, end: Optional[int] = None
+    ) -> None:
         """
         Write the bytes from ``buffer`` to the device, then transmit a stop
         bit.
@@ -75,7 +91,7 @@ class I2CDevice:
         as if ``buffer[start:end]``. This will not cause an allocation like
         ``buffer[start:end]`` will so it saves memory.
 
-        :param bytearray buffer: buffer containing the bytes to write
+        :param ~ReadableBuffer buffer: buffer containing the bytes to write
         :param int start: Index to start writing from
         :param int end: Index to read up to but not include; if None, use ``len(buf)``
         """
@@ -86,14 +102,14 @@ class I2CDevice:
     # pylint: disable-msg=too-many-arguments
     def write_then_readinto(
         self,
-        out_buffer,
-        in_buffer,
+        out_buffer: ReadableBuffer,
+        in_buffer: WriteableBuffer,
         *,
-        out_start=0,
-        out_end=None,
-        in_start=0,
-        in_end=None
-    ):
+        out_start: int = 0,
+        out_end: Optional[int] = None,
+        in_start: int = 0,
+        in_end: Optional[int] = None
+    ) -> None:
         """
         Write the bytes from ``out_buffer`` to the device, then immediately
         reads into ``in_buffer`` from the device. The number of bytes read
@@ -109,8 +125,8 @@ class I2CDevice:
         cause an allocation like ``in_buffer[in_start:in_end]`` will so
         it saves memory.
 
-        :param bytearray out_buffer: buffer containing the bytes to write
-        :param bytearray in_buffer: buffer containing the bytes to read into
+        :param ~ReadableBuffer out_buffer: buffer containing the bytes to write
+        :param ~WriteableBuffer in_buffer: buffer containing the bytes to read into
         :param int out_start: Index to start writing from
         :param int out_end: Index to read up to but not include; if None, use ``len(out_buffer)``
         :param int in_start: Index to start writing at
@@ -133,16 +149,21 @@ class I2CDevice:
 
     # pylint: enable-msg=too-many-arguments
 
-    def __enter__(self):
+    def __enter__(self) -> "I2CDevice":
         while not self.i2c.try_lock():
             pass
         return self
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def __exit__(
+        self,
+        exc_type: Optional[Type[type]],
+        exc_val: Optional[BaseException],
+        exc_tb: Optional[TracebackType],
+    ) -> bool:
         self.i2c.unlock()
         return False
 
-    def __probe_for_device(self):
+    def __probe_for_device(self) -> None:
         """
         Try to read a byte from an address,
         if you get an OSError it means the device is not there
