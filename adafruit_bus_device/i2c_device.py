@@ -10,14 +10,11 @@
 try:
     from typing import Optional, Type
     from types import TracebackType
-    from busio import I2C
-
-    try:
-        from circuitpython_typing import ReadableBuffer, WriteableBuffer
-    except ImportError:
-        from _typing import ReadableBuffer, WriteableBuffer
+    from circuitpython_typing import ReadableBuffer, WriteableBuffer
 except ImportError:
     pass
+
+from busio import I2C
 
 __version__ = "0.0.0-auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_BusDevice.git"
