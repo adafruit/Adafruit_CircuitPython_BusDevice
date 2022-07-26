@@ -9,6 +9,8 @@
 ====================================================
 """
 
+import time
+
 try:
     from typing import Optional, Type
     from types import TracebackType
@@ -89,7 +91,7 @@ class SPIDevice:
 
     def __enter__(self) -> SPI:
         while not self.spi.try_lock():
-            pass
+            time.sleep(0)
         self.spi.configure(
             baudrate=self.baudrate, polarity=self.polarity, phase=self.phase
         )

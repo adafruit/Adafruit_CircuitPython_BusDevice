@@ -7,6 +7,8 @@
 ====================================================
 """
 
+import time
+
 try:
     from typing import Optional, Type
     from types import TracebackType
@@ -150,7 +152,7 @@ class I2CDevice:
 
     def __enter__(self) -> "I2CDevice":
         while not self.i2c.try_lock():
-            pass
+            time.sleep(0)
         return self
 
     def __exit__(
@@ -169,7 +171,7 @@ class I2CDevice:
         or that the device does not support these means of probing
         """
         while not self.i2c.try_lock():
-            pass
+            time.sleep(0)
         try:
             self.i2c.writeto(self.device_address, b"")
         except OSError:
