@@ -34,11 +34,13 @@ class SPIDevice:
     :param ~busio.SPI spi: The SPI bus the device is on
     :param ~digitalio.DigitalInOut chip_select: The chip select pin object that implements the
         DigitalInOut API.
-    :param bool cs_active_value: Set to true if your device requires CS to be active high.
-        Defaults to false.
-    :param int baudrate: The SPI baudrate
-    :param int polarity: The SPI polarity
-    :param int phase: The SPI phase
+    :param bool cs_active_value: Set to True if your device requires CS to be active high.
+        Defaults to False.
+    :param int baudrate: The desired SCK clock rate in Hertz. The actual clock rate may be
+        higher or lower due to the granularity of available clock settings (MCU dependent).
+    :param int polarity: The base state of the SCK clock pin (0 or 1).
+    :param int phase: The edge of the clock that data is captured. First (0) or second (1).
+        Rising or falling depends on SCK clock polarity.
     :param int extra_clocks: The minimum number of clock cycles to cycle the bus after CS is high.
         (Used for SD cards.)
 
