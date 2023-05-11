@@ -55,7 +55,6 @@ class I2CDevice:
     """
 
     def __init__(self, i2c: I2C, device_address: int, probe: bool = True) -> None:
-
         self.i2c = i2c
         self.device_address = device_address
 
