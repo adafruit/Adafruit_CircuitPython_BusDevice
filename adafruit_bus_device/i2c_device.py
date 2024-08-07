@@ -151,7 +151,7 @@ class I2CDevice:
 
     def __enter__(self) -> "I2CDevice":
         while not self.i2c.try_lock():
-            time.sleep(0)
+            time.sleep(0.001)
         return self
 
     def __exit__(
@@ -170,7 +170,7 @@ class I2CDevice:
         or that the device does not support these means of probing
         """
         while not self.i2c.try_lock():
-            time.sleep(0)
+            time.sleep(0.001)
         try:
             self.i2c.writeto(self.device_address, b"")
         except OSError:

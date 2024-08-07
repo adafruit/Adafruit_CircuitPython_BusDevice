@@ -93,7 +93,7 @@ class SPIDevice:
 
     def __enter__(self) -> SPI:
         while not self.spi.try_lock():
-            time.sleep(0)
+            time.sleep(0.001)
         self.spi.configure(
             baudrate=self.baudrate, polarity=self.polarity, phase=self.phase
         )
