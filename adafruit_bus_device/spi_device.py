@@ -19,7 +19,7 @@ try:
     from busio import SPI
     from digitalio import DigitalInOut
 except ImportError:
-    pass
+    DigitalInOut = None
 
 
 __version__ = "0.0.0+auto.0"
