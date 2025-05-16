@@ -1,8 +1,9 @@
 # SPDX-FileCopyrightText: 2021 ladyada for Adafruit Industries
 # SPDX-License-Identifier: MIT
 
-import busio
 import board
+import busio
+
 from adafruit_bus_device.i2c_device import I2CDevice
 
 DEVICE_ADDRESS = 0x68  # device address of DS3231 board
@@ -17,4 +18,4 @@ with device as bus_device:
     result = bytearray(1)
     bus_device.readinto(result)
 
-print("".join("{:02x}".format(x) for x in result))
+print("".join(f"{x:02x}" for x in result))
