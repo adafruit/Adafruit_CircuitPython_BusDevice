@@ -13,9 +13,9 @@ Adafruit CircuitPython BusDevice
     :target: https://github.com/adafruit/Adafruit_CircuitPython_BusDevice/actions/
     :alt: Build Status
 
-.. image:: https://img.shields.io/badge/code%20style-black-000000.svg
-    :target: https://github.com/psf/black
-    :alt: Code Style: Black
+.. image:: https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json
+    :target: https://github.com/astral-sh/ruff
+    :alt: Code Style: Ruff
 
 The ``I2CDevice`` and ``SPIDevice`` helper classes make managing transaction state
 on a bus easy. For example, they manage locking the bus to prevent other
