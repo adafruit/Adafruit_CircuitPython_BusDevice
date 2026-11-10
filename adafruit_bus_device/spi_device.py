@@ -15,7 +15,14 @@ try:
 
     # Used only for type annotations.
     from busio import SPI
-    from digitalio import DigitalInOut
+
+    try:
+        from digitalio import DigitalInOut
+    except RuntimeError as exc:
+        # Blinka wraps missing platform dependencies in a RuntimeError.
+        if not isinstance(getattr(exc, "__cause__", None), ImportError):
+            raise
+        raise ImportError from exc
 except ImportError:
     DigitalInOut = None
 
